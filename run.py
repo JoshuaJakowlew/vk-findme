@@ -21,13 +21,18 @@ def main():
     # dump images from VK
     print('vk-findme > Dumping images from VK...')
     image_dumper = ImageDumper()
-    dumproot, _ = image_dumper.dump_images(id=448744461)
+    # Your friends' images will be dumped if id is not specified
+    dumproot, _ = image_dumper.dump_images()
 
     # create directory for similar faces
     if not os.path.exists('similar_images'):
         os.mkdir('similar_images')
 
     print('vk-findme > Searching faces in test set...')
+    # specify treshold parameter in find_face -> face_finder.findface
+    # if resulting images don't satisfy you
+    # default value is 0.6
+    # lower values mean better similarity
     call_for_test_set(face_finder, dumproot)
 
 def greeting():
