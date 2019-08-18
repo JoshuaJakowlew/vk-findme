@@ -55,7 +55,7 @@ class ImageDumper:
             verbose: If verbose=True then method writes logs
                 If verbose=False then method keeps silence
         Returns:
-            Number of downloaded photos
+            Tuple containing root path and number of downloaded photos
         """
         # Get all friends
         if verbose:
@@ -65,7 +65,7 @@ class ImageDumper:
         # Create folders for photos
         if verbose:
             log('Creating folders...')
-        _, friend_folders = self._create_photos_folder(friends)
+        root_folder, friend_folders = self._create_photos_folder(friends)
 
         friends = list(zip(friends, friend_folders))
 
@@ -84,7 +84,7 @@ class ImageDumper:
             if verbose:
                 log(f'\t({downloaded}) photos has been downloaded')
 
-        return downloaded
+        return (root_folder, downloaded)
 
     # Photo methods
 
