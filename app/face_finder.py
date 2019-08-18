@@ -109,8 +109,3 @@ class FaceFinder:
             face_distances.append(avg_distance)
         
         return face_distances
-
-
-
-        
-            

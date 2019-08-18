@@ -2,10 +2,10 @@
 
 This script allows you to find your (or maybe not) faces in Vkontakte social network.
 
-## What this script do
+## What does this script do
 
 1. Trains face recognition model based on your images
-2. Dumps all images from your frind's pages
+2. Dumps all images from your friend's pages
 3. Looks for similar faces
 
 ## How to
