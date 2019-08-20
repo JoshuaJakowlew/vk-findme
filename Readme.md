@@ -24,7 +24,7 @@ One face for one image.
 ## Changelog
 
 * `1.1.0`
-...Implemented photo parsing from `wall`
+Implemented photo parsing from `wall`
 * `1.0.0`
-...Implemented photo parsing from `photos`
-...Implemented face detection
+Implemented photo parsing from `photos`
+Implemented face detection
