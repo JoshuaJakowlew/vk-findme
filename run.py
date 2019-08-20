@@ -4,7 +4,7 @@ import os
 import shutil
 
 # app version
-VERSION = '1.0.0'
+VERSION = '1.1.0'
 
 def main():
     # show name, version and license
