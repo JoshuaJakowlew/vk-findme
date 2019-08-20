@@ -3,6 +3,7 @@ import urllib
 import os
 import datetime
 import config
+import uuid
 
 from .logger import log
 from .photos_dumper import PhotosDumper
@@ -44,8 +45,8 @@ class ImageDumper:
         Then creates folder for each friend in a list inside root folder
         example:
         - imagedump-2019-08-18-00-49-56
-        -- Павел Дуров
-        -- Lindsey Stirling
+        -- Павел Дуров-8a778108-b139-4317-befa-5734705ff197-145
+        -- Lindsey Stirling-63ea671e-df77-44c9-8a65-cf979d818920-4
 
         Recieves photos of each friend and the downloads them
         If somethings went wrong and photo wasn't downloaded
@@ -119,7 +120,7 @@ class ImageDumper:
 
         friend_folders = []
         for friend in friends:
-            friend_path = f"{root}/{friend['name']}"
+            friend_path = f"{root}/{friend['name']}-{uuid.uuid4()}"
             if not os.path.exists(friend_path):
                 os.makedirs(friend_path)
                 friend_folders.append(friend_path)
