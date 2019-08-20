@@ -5,6 +5,8 @@ import datetime
 import config
 
 from .logger import log
+from .photos_dumper import PhotosDumper
+from .wall_dumper import WallDumper
 
 _API_VERSION = '5.101' # Used VK API version
 
@@ -158,80 +160,12 @@ class ImageDumper:
         Returns:
             Array of friend's photos url's
         """
+        photos_dumper = PhotosDumper({ 'vk': self._vk })
+        wall_dumper = WallDumper({ 'vk': self._vk })
 
-        json_photos = self._receive_photos_from_vk(friend)
-        return self._parse_photos_from_vk(friend, json_photos)
-
-    def _receive_photos_from_vk(self, friend):
-        """Recieves friend's photo objects from VK
-
-        Args:
-            friend: Dict containing friend's id and full name
-                (see _get_friends)
-                example: { 'id': 210700286, 'name': 'Lindsey Stirling' }
-        Returns:
-            Array of VK photo objects
-            (see https://vk.com/dev/objects/photo)
-        """
-
-        owner_id = friend['id']
-        res = self._vk.photos.getAll(owner_id=owner_id, count=200, need_hidden=1)
-        count = res['count']
-        json_photos = res['items']
-
-        for i in range(_MAX_PHOTOS, count, _MAX_PHOTOS):
-            res = self._vk.photos.getAll(owner_id=owner_id, offset=i, count=200, need_hidden=1)
-            json_photos.extend(res['items'])
-
-        return json_photos
-
-    def _parse_photos_from_vk(self, friend, json_photos):
-        """Parses photo objects from VK
-
-        Takes array of VK photo objects and parses url of the largest photo
-
-        Args:
-            friend: Dict containing friend's id and full name
-                (see _get_friends)
-                example: { 'id': 210700286, 'name': 'Lindsey Stirling' }
-            json_photos: Array of VK photo objects
-                (see https://vk.com/dev/objects/photo)
-        Returns:
-            Array of friend's photos url's
-        """
-
-        photos = []
-
-        for photo in json_photos:
-            url = self._select_largest_photo(photo['sizes'])
-            photos.append(url)
-
-        return photos
-
-    def _select_largest_photo(self, sizes):
-        """Selects photo with largest area
-        
-        Takes array of different photo sizes
-        and selects photo with largestarea.
-        Note, that photos uploaded before 2012 has
-        "width" and "height" attributes equal to 0
-
-        Args:
-            sizes: "sizes" array from VK photo object
-                (see https://vk.com/dev/objects/photo)
-        Returns:
-            biggest photo's url
-        """
-
-        max_size = 0
-        photo = ''
-        for size in sizes:
-            w = size['width']
-            h = size['height']
-            if w * h >= max_size:
-                max_size = w * h
-                photo = size['url']
-        return photo
+        photos = photos_dumper.get_photos(friend['id'])
+        photos.extend(wall_dumper.get_photos(friend['id']))
+        return list(set(photos))
 
     # Friend methods
 
